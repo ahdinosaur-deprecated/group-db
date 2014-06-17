@@ -2,7 +2,7 @@
   "name": "open-app-circle-domain",
   "version": "0.1.0",
   "description": "Circle model domain",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha --recursive test"
   },

@@ -22,7 +22,7 @@ describe("#Circle", function () {
       expect(err).to.not.exist;
       var newCircle = Circle.create({
         name: "Law Firm",
-        members: [member],
+        member: [member],
       });
       newCircle.save(function (err) {
         expect(err).to.not.exist;
@@ -31,11 +31,11 @@ describe("#Circle", function () {
         Circle.get(key, function (err, getCircle) {
           expect(err).to.not.exist;
           expect(getCircle.toJSON()).to.deep.equal(newCircle.toJSON());
-          Circle.update(key, { members: []}, function (err, updateCircle) {
+          Circle.update(key, { member: []}, function (err, updateCircle) {
             expect(err).to.not.exist;
             expect(updateCircle.toJSON()).to.deep.equal({
               name: newCircle.name,
-              members: [],
+              member: [],
             });
             done();
           });
