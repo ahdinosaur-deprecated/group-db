@@ -18,7 +18,7 @@
   "homepage": "https://github.com/open-app/circle-domain",
   "dependencies": {
     "dulcimer": "^1.1.4",
-    "validator": "^3.16.0"
+    "verymodel": "^1.10.1"
   },
   "devDependencies": {
     "chai": "^1.9.1",
