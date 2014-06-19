@@ -1,6 +1,7 @@
 var expect = require('chai').expect;
 var level = require('level');
 var db = level('testdb', {valueEncoding: 'json'});
+var _ = require('lodash');
 
 var Person = require('open-app-person-domain')({
   db: db,
@@ -24,17 +25,17 @@ describe("#Circle", function () {
       });
       newCircle.save(function (err) {
         expect(err).to.not.exist;
-        var key = newCircle.key;
-        expect(key).to.exist;
-        Circle.get(key, function (err, getCircle) {
+        var id = newCircle.id;
+        expect(id).to.exist;
+        Circle.get(id, function (err, getCircle) {
           expect(err).to.not.exist;
+          expect(getCircle).to.have.property('id');
           expect(getCircle.toJSON()).to.deep.equal(newCircle.toJSON());
-          Circle.update(key, { member: []}, function (err, updateCircle) {
+          var updates = { member: [] };
+          Circle.update(id, updates, function (err, updateCircle) {
             expect(err).to.not.exist;
-            expect(updateCircle.toJSON()).to.deep.equal({
-              name: newCircle.name,
-              member: [],
-            });
+            expect(updateCircle.toJSON())
+            .to.deep.equal(_.extend(newCircle.toJSON(), updates))
             done();
           });
         });
