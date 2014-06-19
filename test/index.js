@@ -14,7 +14,7 @@ describe("#Circle", function () {
   it("should CRUD circle model", function (done) {
     var member = Person.create({
       name: "Bob Loblaw",
-      email: "bobloblawlawblog.com",
+      email: "bobloblaw@bobloblawslawblog.com",
     });
     member.save(function (err) {
       expect(err).to.not.exist;
