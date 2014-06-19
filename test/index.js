@@ -4,12 +4,10 @@ var db = level('testdb', {valueEncoding: 'json'});
 
 var Person = require('open-app-person-domain')({
   db: db,
-  name: "person",
 })
 
 var Circle = require('../')({
   db: db,
-  name: "circle",
 });
 
 describe("#Circle", function () {
