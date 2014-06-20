@@ -27,6 +27,7 @@ describe("#Circle", function () {
         expect(err).to.not.exist;
         var id = newCircle.id;
         expect(id).to.exist;
+        expect(newCircle).to.have.property("type", "Circle");
         Circle.get(id, function (err, getCircle) {
           expect(err).to.not.exist;
           expect(getCircle).to.have.property('id');
