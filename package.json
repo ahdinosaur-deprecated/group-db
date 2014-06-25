@@ -1,30 +1,30 @@
 {
-  "name": "open-app-circle-domain",
-  "version": "0.1.4",
-  "description": "Circle model domain",
-  "main": "lib/index.js",
+  "name": "open-app-circle-db",
+  "version": "0.2.0-pre.1",
+  "description": "open-app Circle database",
+  "main": "index.js",
   "scripts": {
     "test": "mocha --recursive test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/open-app/circle-domain.git"
+    "url": "git://github.com/open-app/circle-db.git"
   },
   "author": "open-app",
   "license": "AGPLv3",
   "bugs": {
-    "url": "https://github.com/open-app/circle-domain/issues"
+    "url": "https://github.com/open-app/circle-db/issues"
   },
-  "homepage": "https://github.com/open-app/circle-domain",
+  "homepage": "https://github.com/open-app/circle-db",
   "dependencies": {
-    "dulcimer": "^1.1.4",
-    "verymodel": "^1.10.1"
+    "dbjs-ext": "0.0.1"
   },
   "devDependencies": {
     "chai": "^1.9.1",
-    "level": "^0.18.0",
+    "dbjs": "0.0.3",
+    "es5-ext": "^0.10.4",
     "lodash": "^2.4.1",
     "mocha": "^1.20.1",
-    "open-app-person-domain": "~0.1.1"
+    "open-app-person-db": "git://github.com/open-app/person-domain#0.2.0"
   }
 }
