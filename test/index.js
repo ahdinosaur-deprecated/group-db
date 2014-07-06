@@ -1,7 +1,6 @@
 var expect = require('chai').expect;
-var DB = require('dbjs');
 var _ = require('lodash');
-var toArray = require('es5-ext/array/to-array');
+var Promise = require('bluebird');
 
 var bob = {
   name: "Bob Loblaw",
@@ -16,21 +15,73 @@ var boblaw = _.extend(_.clone(law), {
   member: [bob],
 });
 
-describe("#Circle", function () {
-  var db;
+var checkGroup = function (actual, expected) {
+  expect(actual.id).to.exist;
+  expect(actual.type).to.equal("Group");
+  _.each(expected.member, function (expectedMember) {
+    var actualMember = _.find(actual.member, expectedMember);
+    _.each(expectedMember, function (value, key) {
+      expect(actualMember).to.have.property(key, value);
+    });
+  })
+  _.each(expected, function (value, key) {
+    if (key === 'member') { return; }
+    expect(actual).to.have.property(key, value);
+  });
+};
+
+describe("#Group", function () {
+
+  var knex = require('knex')(require('../knexfile').test);
+  var bookshelf = require('bookshelf')(knex);
+  var Person = require('oa-person-db')(bookshelf);
+  var Group;
 
   beforeEach(function () {
-    db = DB();
-
-    require('open-app-person-db')({
-      db: db,
-    });
-    require('../')({
-      db: db,
-    });
+    return Promise.all([
+      knex('groups').del(),
+      knex('members').del(),
+      knex('people').del(),
+    ]);
   });
 
-  it("should CRUD circle", function () {
+  it("should load group model", function () {
+    Group = require('../')(bookshelf);
+  });
+
+  it("should create group", function () {
+    // save person
+    return Person.forge().save(bob)
+    .bind({})
+    .then(function (savedPerson) {
+      this.person = savedPerson;
+    })
+    .then(function () {
+      // save group
+      return Group.forge().save(law);
+    })
+    .then(function (savedGroup) {
+      this.group = savedGroup;
+      // save person-group membership
+      return Group.Member.forge().save({
+        member_id: this.person.id,
+        member_type: "people",
+        group_id: this.group.id,
+      });
+    })
+    .then(function (savedMember) {
+      // load group members
+      return this.group.load(["member.member"]);
+    })
+    .then(function (group) {
+      checkGroup(group.toJSON(), boblaw);
+      // load person memberOfs
+      return this.person.load(['memberOf.memberOf'])
+    })
+    .then(function (person) {
+      console.log(person.toJSON());
+    })
+    /*
     var fixture = _.clone(boblaw);
     // create 
     var person = db.Person(_.clone(bob));
@@ -63,6 +114,7 @@ describe("#Circle", function () {
     // get
     expect(db.objects.getById(id))
       .to.be.empty;
+    */
   });
 });
 
