@@ -63,11 +63,7 @@ describe("#Group", function () {
     .then(function (savedGroup) {
       this.group = savedGroup;
       // save person-group membership
-      return Group.Member.forge().save({
-        member_id: this.person.id,
-        member_type: "people",
-        group_id: this.group.id,
-      });
+      return savedGroup.member().add(this.person)
     })
     .then(function (savedMember) {
       // load group members

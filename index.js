@@ -22,7 +22,14 @@ module.exports = function (Bookshelf) {
 
   var Members = Bookshelf.collection('Members', {
     model: Member,
-  })
+    add: function (member) {
+      return Member.forge().save({
+        member_id: member.id,
+        member_type: member.tableName,
+        group_id: this.relatedData.parentId,
+      });
+    },
+  });
 
   return Bookshelf.model('Group', {
     tableName: 'groups',
@@ -36,7 +43,9 @@ module.exports = function (Bookshelf) {
       return this.morphMany('Member', 'member');
     },
     member: function () {
-      return this.hasMany('Member');
+      var members = this.hasMany('Member');
+      members.add = Members.prototype.add;
+      return members;
     },
     toJSON: function (options) {
       options = options || {};
